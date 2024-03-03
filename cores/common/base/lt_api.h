@@ -13,7 +13,7 @@ extern "C" {
 #include "api/lt_cpu.h"
 #include "api/lt_device.h"
 #include "api/lt_flash.h"
-#include "api/lt_init.h"
+#include <api/lt_init.h>
 #include "api/lt_mem.h"
 #include "api/lt_ota.h"
 #include "api/lt_sleep.h"
