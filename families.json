@@ -100,7 +100,7 @@
 		"parent": null,
 		"code": "wmiot",
 		"description": "WinnerMicro W60x/W800x"
-	}
+	},
 	"lightning-ln882x": {
 		"parent": null,
 		"code": "ln882x",
