@@ -10,37 +10,37 @@
 #define NUM_DIGITAL_PINS   8  // Digital inputs/outputs
 #define NUM_ANALOG_INPUTS  2  // ADC inputs
 #define NUM_ANALOG_OUTPUTS 0  // PWM & DAC outputs
-#define PINS_GPIO_MAX      11 // Last usable GPIO number
+#define PINS_GPIO_MAX      25 // Last usable GPIO number
 
 // Wire Interfaces
 // ---------------
 #define PIN_WIRE0_SCL_0 11u // PA_11
-#define PIN_WIRE0_SCL_1 3u  // PA_3
+#define PIN_WIRE0_SCL_1 19u // PB_3
 #define PIN_WIRE0_SCL_2 3u  // PA_3
-#define PIN_WIRE0_SCL_3 8u  // PB_8
+#define PIN_WIRE0_SCL_3 24u // PB_8
 #define PIN_WIRE0_SCL_4 2u  // PA_2
-#define PIN_WIRE0_SCL_5 9u  // PB_9
+#define PIN_WIRE0_SCL_5 25u // PB_9
 #define PIN_WIRE0_SCL_6 1u  // PA_1
 #define PIN_WIRE0_SCL_7 0u  // PA_0
 #define PIN_WIRE0_SDA_0 11u // PA_11
-#define PIN_WIRE0_SDA_1 3u  // PA_3
+#define PIN_WIRE0_SDA_1 19u // PB_3
 #define PIN_WIRE0_SDA_2 3u  // PA_3
-#define PIN_WIRE0_SDA_3 8u  // PB_8
+#define PIN_WIRE0_SDA_3 24u // PB_8
 #define PIN_WIRE0_SDA_4 2u  // PA_2
-#define PIN_WIRE0_SDA_5 9u  // PB_9
+#define PIN_WIRE0_SDA_5 25u // PB_9
 #define PIN_WIRE0_SDA_6 1u  // PA_1
 #define PIN_WIRE0_SDA_7 0u  // PA_0
-#define PINS_WIRE0_SCL  (pin_size_t[]){11u, 3u, 3u, 8u, 2u, 9u, 1u, 0u}
-#define PINS_WIRE0_SDA  (pin_size_t[]){11u, 3u, 3u, 8u, 2u, 9u, 1u, 0u}
+#define PINS_WIRE0_SCL  (pin_size_t[]){11u, 19u, 3u, 24u, 2u, 25u, 1u, 0u}
+#define PINS_WIRE0_SDA  (pin_size_t[]){11u, 19u, 3u, 24u, 2u, 25u, 1u, 0u}
 
 // Serial ports
 // ------------
-#define PIN_SERIAL0_RX  8u // PB_8
-#define PIN_SERIAL0_TX  9u // PB_9
-#define PIN_SERIAL1_RX  3u // PA_3
-#define PIN_SERIAL1_TX  2u // PA_2
-#define PINS_SERIAL0_RX (pin_size_t[]){8u}
-#define PINS_SERIAL0_TX (pin_size_t[]){9u}
+#define PIN_SERIAL0_RX  24u // PB_8
+#define PIN_SERIAL0_TX  25u // PB_9
+#define PIN_SERIAL1_RX  3u  // PA_3
+#define PIN_SERIAL1_TX  2u  // PA_2
+#define PINS_SERIAL0_RX (pin_size_t[]){24u}
+#define PINS_SERIAL0_TX (pin_size_t[]){25u}
 #define PINS_SERIAL1_RX (pin_size_t[]){3u}
 #define PINS_SERIAL1_TX (pin_size_t[]){2u}
 
@@ -48,18 +48,18 @@
 // -------------------
 #define PIN_ADC2 0u  // PA_0
 #define PIN_ADC3 1u  // PA_1
-#define PIN_ADC5 3u  // PB_3
-#define PIN_PA00 0u  // PA_0
-#define PIN_PA01 1u  // PA_1
-#define PIN_PA02 2u  // PA_2
-#define PIN_PA03 3u  // PA_3
-#define PIN_PA11 11u // PA_11
-#define PIN_PB03 3u  // PB_3
-#define PIN_PB08 8u  // PB_8
-#define PIN_PB09 9u  // PB_9
-#define PIN_RX0  8u  // PB_8
+#define PIN_ADC5 19u // PB_3
+#define PIN_P0   0u  // PA_0
+#define PIN_P1   1u  // PA_1
+#define PIN_P2   2u  // PA_2
+#define PIN_P3   3u  // PA_3
+#define PIN_P11  11u // PA_11
+#define PIN_P19  19u // PB_3
+#define PIN_P24  24u // PB_8
+#define PIN_P25  25u // PB_9
+#define PIN_RX0  24u // PB_8
 #define PIN_RX1  3u  // PA_3
-#define PIN_TX0  9u  // PB_9
+#define PIN_TX0  25u // PB_9
 #define PIN_TX1  2u  // PA_2
 
 // Port availability
@@ -73,11 +73,11 @@
 // Arduino pin names
 // -----------------
 #define PIN_D0 11u // PA_11
-#define PIN_D1 3u  // PB_3
+#define PIN_D1 19u // PB_3
 #define PIN_D2 3u  // PA_3
-#define PIN_D3 8u  // PB_8
+#define PIN_D3 24u // PB_8
 #define PIN_D4 2u  // PA_2
-#define PIN_D5 9u  // PB_9
+#define PIN_D5 25u // PB_9
 #define PIN_D6 1u  // PA_1
 #define PIN_D7 0u  // PA_0
 #define PIN_A2 0u  // PA_0

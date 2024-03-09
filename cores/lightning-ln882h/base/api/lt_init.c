@@ -4,12 +4,22 @@
 #include <sdk_private.h>
 
 extern uint8_t uart_print_port;
+extern Serial_t m_LogSerial;
+
+void lt_init_log(void)
+{
+    // default LT print port
+    uart_print_port = LT_UART_DEFAULT_LOGGER;
+    // default SDK print port
+    serial_init(&m_LogSerial, LT_UART_DEFAULT_PORT, CFG_UART_BAUDRATE_LOG, NULL);
+}
+
 
 void lt_init_family() {
     //0. check reboot cause
     ln_chip_get_reboot_cause();
 
-    //1.sys clock,interrupt
+    //1. sys clock,interrupt
     SetSysClock();
     set_interrupt_priority();
     switch_global_interrupt(HAL_ENABLE);
@@ -18,9 +28,8 @@ void lt_init_family() {
     //2. register os heap mem
     OS_DefineHeapRegions();
 
-    // set default UART print port
-    uart_print_port = LT_UART_DEFAULT_LOGGER;
-    log_init();
+    //3. log init
+    lt_init_log();
 
     cm_backtrace_init("LibreTiny - LN882H", "HW_V1.0", "SW_V1.0");
     LT_I("------  LibreTiny - LN882H  ------");
@@ -33,7 +42,7 @@ void lt_init_family() {
         LT_E("KV init failed!");
     }
 
-    //3.rf preprocess,img cal
+    //4. rf preprocess,img cal
     //wifi_rf_calibration();
 }
 

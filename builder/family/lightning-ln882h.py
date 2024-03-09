@@ -102,7 +102,7 @@ queue.AddLibrary(
         "+<components/fs/kv/kv/ln_kv.c>",
         "+<components/fs/kv/kv_port/ln_kv_port.c>",
         "+<components/utils/fifo/fifobuf.c>",
-#        "+<components/utils/debug/log.c>",
+        "+<components/utils/debug/log.c>",
         "+<components/utils/debug/CmBacktrace/cm_backtrace.c>",
         "+<components/utils/power_mgmt/ln_pm.c>",
         "+<components/utils/runtime/runtime.c>",
@@ -155,7 +155,7 @@ queue.AddLibrary(
         "+<components/wifi/wifi_lib_export>",
     ],
     options=dict(
-#        CFLAGS=["-w"],
+        CFLAGS=["-w"],
     ),
 )
 

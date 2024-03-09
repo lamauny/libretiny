@@ -2,10 +2,6 @@
 
 #include "wiring_private.h"
 
-#define GPIO_GET_PORT(pin) (pin >> 16)
-#define GPIO_GET_PIN(pin)  ((uint16_t)(pin & 0xFFFF))
-#define GPIO_GET_BASE(pin) (GPIO_GET_PORT(pin) == 1 ? GPIOB_BASE : GPIOA_BASE)
-
 void pinMode(pin_size_t pinNumber, PinMode pinMode) {
 	pinCheckGetData(pinNumber, PIN_GPIO, );
 

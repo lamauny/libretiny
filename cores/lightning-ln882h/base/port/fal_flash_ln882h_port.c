@@ -18,7 +18,7 @@ static int read(long offset, uint8_t *buf, size_t size) {
 }
 
 static int write(long offset, const uint8_t *buf, size_t size) {
-	hal_flash_program(offset, size, buf);
+	hal_flash_program(offset, size, (uint8_t *)buf);
 	return size;
 }
 
