@@ -42,8 +42,11 @@ void lt_init_family() {
         LT_E("KV init failed!");
     }
 
-    //4. rf preprocess,img cal
-    //wifi_rf_calibration();
+    //init system parameter
+    sysparam_integrity_check_all();
+
+    //ln_pm_sleep_mode_set(ACTIVE);
+    //ln_pm_always_clk_disable_select(CLK_G_I2S | CLK_G_WS2811 | CLK_G_SDIO | CLK_G_AES);
 }
 
 void lt_init_arduino() {

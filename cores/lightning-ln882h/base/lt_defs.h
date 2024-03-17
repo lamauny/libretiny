@@ -14,5 +14,4 @@
 #define LT_HW_WIFI		 0
 
 #define LT_HEAP_FUNC	xPortGetFreeHeapSize
-#define LT_REALLOC_FUNC pvPortReAlloc
-#define LT_REMALLOC		0
+#define LT_REMALLOC		1

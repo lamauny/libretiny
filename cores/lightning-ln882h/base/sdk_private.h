@@ -9,18 +9,6 @@ extern "C" {
 //PinNames
 #include "PinNames.h"
 
-// fix conflicts with Arduino's PinMode enum
-//#define PinMode ln_PinMode
-// fix conflict with Arduino's hexdump declaration
-// #define hexdump ln_hexdump
-
-//#undef log_printf
-//#define __wrap_sprintf __wrap_ln_sprintf
-//#include "utils/debug/log.h"
-// conflict with lt_logger.h
-//#undef log_printf
-//#undef __wrap_sprintf
-
 // undefine ROM stdio in favor of printf() library (wrappers)
 #undef printf
 #undef sprintf
@@ -30,19 +18,58 @@ extern "C" {
 #undef vprintf
 #include <stdio.h>
 
+// Conflicting types
+#define WIFI_MODE_STATION            LN_WIFI_MODE_STATION
+#define WIFI_MODE_AP                 LN_WIFI_MODE_AP
+#define WIFI_MODE_AP_STATION         LN_WIFI_MODE_AP_STATION
+#define WIFI_MODE_MAX                LN_WIFI_MODE_MAX
+#define WIFI_AUTH_OPEN               LN_WIFI_AUTH_OPEN
+#define WIFI_AUTH_WEP                LN_WIFI_AUTH_WEP
+#define WIFI_AUTH_WPA_PSK            LN_WIFI_AUTH_WPA_PSK
+#define WIFI_AUTH_WPA2_PSK           LN_WIFI_AUTH_WPA2_PSK
+#define WIFI_AUTH_WPA_WPA2_PSK       LN_WIFI_AUTH_WPA_WPA2_PSK
+#define WIFI_AUTH_WPA2_ENTERPRISE    LN_WIFI_AUTH_WPA2_ENTERPRISE
+#define WIFI_AUTH_WPA3_SAE           LN_WIFI_AUTH_WPA3_SAE
+#define WIFI_AUTH_WPA2_PSK_WPA3_SAE  LN_WIFI_AUTH_WPA2_PSK_WPA3_SAE
+#define WIFI_AUTH_MAX                LN_WIFI_AUTH_MAX
+#define wifi_mode_t ln_wifi_mode_t
+#define wifi_auth_mode_t ln_wifi_auth_mode_t
+
 //SDK
 #include <osal/osal.h>
 #include <serial/serial.h>
 #include <hal/hal_gpio.h>
 #include <hal/hal_interrupt.h>
 //#include <hal/hal_flash.h>
-//#include "utils/system_parameter.h"
+#include <wifi.h>
+#include <wifi_manager.h>
+#include "utils/system_parameter.h"
+#include "utils/ln_psk_calc.h"
 #include "utils/debug/CmBacktrace/cm_backtrace.h"
 #include "utils/reboot_trace/reboot_trace.h"
+#include "utils/power_mgmt/ln_pm.h"
 #include "utils/runtime/runtime.h"
 #include "ln_nvds.h"
 #include "ln_kv_api.h"
 #include "flash_partition_table.h"
+
+#ifndef LN882H_SDK
+#undef WIFI_MODE_STATION
+#undef WIFI_MODE_AP
+#undef WIFI_MODE_AP_STATION
+#undef WIFI_MODE_MAX
+#undef WIFI_AUTH_OPEN
+#undef WIFI_AUTH_WEP
+#undef WIFI_AUTH_WPA_PSK
+#undef WIFI_AUTH_WPA2_PSK
+#undef WIFI_AUTH_WPA_WPA2_PSK
+#undef WIFI_AUTH_WPA2_ENTERPRISE
+#undef WIFI_AUTH_WPA3_SAE
+#undef WIFI_AUTH_WPA2_PSK_WPA3_SAE
+#undef WIFI_AUTH_MAX
+#undef wifi_mode_t
+#undef wifi_auth_mode_t
+#endif
 
 #ifdef __cplusplus
 } // extern "C"

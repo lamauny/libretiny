@@ -1,13 +1,11 @@
 /* Copyright (c) Etienne Le Cousin 2024-02-18. */
 
 #include "WiFiPrivate.h"
-// TODO
-//rtw_wifi_setting_t wifi_setting;
 
 WiFiClass::WiFiClass() {
 	data = (WiFiData *)calloc(1, sizeof(WiFiData));
 
- 	DATA->scanSem = xSemaphoreCreateBinary();
+	DATA->scanSem = xSemaphoreCreateBinary();
 }
 
 WiFiClass::~WiFiClass() {
@@ -17,20 +15,23 @@ WiFiClass::~WiFiClass() {
 }
 
 WiFiAuthMode securityTypeToAuthMode(uint8_t type) {
-	// the value reported in rtw_scan_result is rtw_encryption_t, even though it's rtw_security_t in the header file
-/*	switch (type) {
-		case RTW_ENCRYPTION_OPEN:
+	switch (type) {
+		case LN_WIFI_AUTH_OPEN:
 			return WIFI_AUTH_OPEN;
-		case RTW_ENCRYPTION_WEP40:
-		case RTW_ENCRYPTION_WEP104:
+		case LN_WIFI_AUTH_WEP:
 			return WIFI_AUTH_WEP;
-		case RTW_ENCRYPTION_WPA_TKIP:
-		case RTW_ENCRYPTION_WPA_AES:
+		case LN_WIFI_AUTH_WPA_PSK:
 			return WIFI_AUTH_WPA_PSK;
-		case RTW_ENCRYPTION_WPA2_TKIP:
-		case RTW_ENCRYPTION_WPA2_AES:
-		case RTW_ENCRYPTION_WPA2_MIXED:
+		case LN_WIFI_AUTH_WPA2_PSK:
 			return WIFI_AUTH_WPA2_PSK;
-	}*/
+		case LN_WIFI_AUTH_WPA_WPA2_PSK:
+			return WIFI_AUTH_WPA_WPA2_PSK;
+		case LN_WIFI_AUTH_WPA2_ENTERPRISE:
+			return WIFI_AUTH_WPA2_ENTERPRISE;
+		case LN_WIFI_AUTH_WPA3_SAE:
+			return WIFI_AUTH_WPA3_PSK;
+		case LN_WIFI_AUTH_WPA2_PSK_WPA3_SAE:
+			return WIFI_AUTH_WPA2_WPA3_PSK;
+	}
 	return WIFI_AUTH_INVALID;
 }

@@ -89,6 +89,7 @@
 		"sources": [
 			"+<src/api/*.c>",
 			"+<src/core/*.c>",
+			"-<src/core/mem.c>",
 			"+<src/core/ipv4/*.c>",
 			"+<src/netif/ethernet.c>",
 			"+<src/netif/etharp.c>",
@@ -100,9 +101,9 @@
 		"includes": [
 			"+<src/include>",
 			"+<src/include/ipv4>",
-			"+<src/port/ln_osal/include>",
-			"+<src/port/ln_osal/include/netif>",
-			"+<src/port/ln_osal/include/arch>"
+			"+<port/ln_osal/include>",
+			"+<port/ln_osal/include/netif>",
+			"+<port/ln_osal/include/arch>"
 		]
 	},
 	"lwip-amb1": {

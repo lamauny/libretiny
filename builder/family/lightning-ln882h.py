@@ -104,6 +104,7 @@ queue.AddLibrary(
         "+<components/utils/fifo/fifobuf.c>",
         "+<components/utils/debug/log.c>",
         "+<components/utils/debug/CmBacktrace/cm_backtrace.c>",
+        "+<components/utils/system_parameter.c>",
         "+<components/utils/power_mgmt/ln_pm.c>",
         "+<components/utils/runtime/runtime.c>",
         "+<components/utils/reboot_trace/reboot_trace.c>",
@@ -137,24 +138,36 @@ queue.AddLibrary(
         "+<components/tencent/qcloud_iot_c_sdk/external_libs/cJSON>",
     ],
     options=dict(
+        CPPDEFINES=["LN882H_SDK"],
         CFLAGS=["-w"],
     ),
 )
 
 queue.AddLibrary(
-    name="ln882h_wifi",
+    name="ln882h_net",
     base_dir="$SDK_DIR",
     srcs=[
         # WiFi
- #       "+<components/wifi/wifi_manager/wifi_manager.c>",
+        "+<components/wifi/wifi_manager/wifi_manager.c>",
         "+<components/wifi/wifi_lib_import/wifi_port.c>",
+        # DHCPD
+        "+<components/net/dhcpd/dhcpd.c>",
+        "+<components/net/dhcpd/dhcp_packet.c>",
+        "+<components/net/dhcpd/ip_allocator.c>",
+        # Utils
+        "+<components/utils/ln_misc.c>",
+        "+<components/utils/ln_sha1.c>",
+        "+<components/utils/ln_aes.c>",
+        "+<components/utils/ln_psk_calc.c>",
     ],
     includes=[
         "+<components/wifi/wifi_manager>",
         "+<components/wifi/wifi_lib_import>",
         "+<components/wifi/wifi_lib_export>",
+        "+<components/net/dhcpd>",
     ],
     options=dict(
+        CPPDEFINES=["LN882H_SDK"],
         CFLAGS=["-w"],
     ),
 )

@@ -130,6 +130,15 @@ else:
 AlwaysBuild(env.Alias("upload", upload_source, upload_actions))
 
 #
+# PATCH EL : make image
+#
+#target_image = env.Alias("image", target_elf, env.Execute("/bin/sh /workspaces/esphome/makeimage.sh"))
+#target_image = env.Alias("image", target_elf, env.Execute("/bin/sh makeimage.sh"))
+#AlwaysBuild(target_image)
+
+#
 # Default targets
 #
-Default([target_buildprog, target_size])
+#Default([target_buildprog, target_size])
+Default([target_elf, target_size])
+#Default([target_elf, target_size, target_image])
