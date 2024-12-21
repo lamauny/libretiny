@@ -181,6 +181,35 @@ queue.AddExternalLibrary("freertos-port")
 # Sources - lwIP
 queue.AddExternalLibrary("lwip", port="ln882h")
 
+# Sources - mbedTLS
+queue.AddLibrary(
+    name="ln882h_mbedtls",
+    base_dir="$SDK_DIR",
+    srcs=[
+        # mbedTLS from SDK
+        "+<components/net/mbedtls/library/*.c>",
+        # replace this with a port specific
+        "-<components/net/mbedtls/library/net_sockets.c>",
+        "-<components/net/mbedtls/library/platform.c>",
+        "-<components/net/mbedtls/library/threading_alt.c>",
+        "-<components/net/mbedtls/library/timing.c>",
+        # ln port
+        "+<components/net/mbedtls/port_ln/library/*.c>",
+    ],
+    includes=[
+        "+<components/net/mbedtls/include>",
+        "+<components/net/mbedtls/port_ln/include>",
+    ],
+    options=dict(
+        CPPDEFINES=[
+            "LN882H_SDK",
+            ("MBEDTLS_CONFIG_FILE",r"\"mbedtls_config.h\""),
+            "MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED",
+            ],
+        CFLAGS=["-w"],
+    ),
+)
+
 # Libs & linker config
 queue.AppendPublic(
     LIBPATH=[

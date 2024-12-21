@@ -94,9 +94,9 @@ WiFiMode WiFiClass::getMode() {
 }
 
 WiFiStatus WiFiClass::status() {
-	wifi_sta_status_t status;
+	wifi_sta_status_t status = WIFI_STA_STATUS_STARTUP;
 	wifi_get_sta_status(&status);
-	if ((status & 0xFF) == WIFI_STA_STATUS_CONNECTED) {
+	if (status == WIFI_STA_STATUS_CONNECTED) {
 		return WL_CONNECTED;
 	} else {
 		return WL_DISCONNECTED;

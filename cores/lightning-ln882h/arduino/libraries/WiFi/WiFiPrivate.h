@@ -15,6 +15,7 @@ extern "C" {
 #include <lwip/dns.h>
 #include <lwip/ip_addr.h>
 #include <lwip/netif.h>
+#include <lwip/netifapi.h>
 #include <netif/ethernetif.h>
 
 #include <FreeRTOS.h>

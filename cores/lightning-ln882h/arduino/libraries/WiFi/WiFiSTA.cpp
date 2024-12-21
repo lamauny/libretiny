@@ -39,7 +39,8 @@ bool WiFiClass::config(IPAddress localIP, IPAddress gateway, IPAddress subnet, I
 	if (!enableSTA(true))
 		return false;
 	WiFiNetworkInfo &info = DATA->sta;
-/* TODO
+	struct netif *ifs = netdev_get_netif(NETIF_IDX_STA);
+
 	struct ip_addr d1, d2;
 	d1.addr = info.dns1 = dns1;
 	d2.addr = info.dns2 = dns2;
@@ -50,17 +51,16 @@ bool WiFiClass::config(IPAddress localIP, IPAddress gateway, IPAddress subnet, I
 
 	if (!localIP[0]) {
 		info.localIP = 0;
-		LwIP_DHCP(0, DHCP_START);
+		netifapi_dhcp_start(ifs);
 		return true;
 	}
-	struct netif *ifs = NETIF_RTW_STA;
 	struct ip_addr ipaddr, netmask, gw;
 	ipaddr.addr = info.localIP = localIP;
 	netmask.addr = info.subnet = subnet;
 	gw.addr = info.gateway = gateway;
 	netif_set_addr(ifs, &ipaddr, &netmask, &gw);
-	LwIP_DHCP(0, DHCP_STOP);
-	*/
+	netifapi_dhcp_release_and_stop(ifs);
+
 	return true;
 }
 
@@ -84,7 +84,7 @@ bool WiFiClass::reconnect(const uint8_t *bssid) {
 	wifi_scan_cfg_t scan_cfg = {
 			.channel   = (uint8_t)info.channel,
 			.scan_type = WIFI_SCAN_TYPE_ACTIVE,
-			.scan_time = 10,
+			.scan_time = 5,
 	};
 
 	if (0 == ln_psk_calc(connect.ssid, connect.pwd, psk_value, sizeof (psk_value)))
@@ -112,12 +112,10 @@ bool WiFiClass::disconnect(bool wifiOff) {
 }
 
 bool WiFiClass::setAutoReconnect(bool autoReconnect) {
-	// TODO
 	return false;
 }
 
 bool WiFiClass::getAutoReconnect() {
-	// TODO
 	return false;
 }
 
@@ -140,9 +138,7 @@ IPAddress WiFiClass::gatewayIP() {
 }
 
 IPAddress WiFiClass::dnsIP(uint8_t dns_no) {
-	// TODO
-	IPAddress ip;
-	return ip;
+	return dns_getserver(dns_no)->addr;
 }
 
 IPAddress WiFiClass::broadcastIP() {

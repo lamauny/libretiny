@@ -135,6 +135,7 @@ AlwaysBuild(env.Alias("upload", upload_source, upload_actions))
 #target_image = env.Alias("image", target_elf, env.Execute("/bin/sh /workspaces/esphome/makeimage.sh"))
 #target_image = env.Alias("image", target_elf, env.Execute("/bin/sh makeimage.sh"))
 #AlwaysBuild(target_image)
+env.AddPostAction(target_elf, env.VerboseAction("/bin/sh makeimage.sh", "Building final binary..."))
 
 #
 # Default targets
