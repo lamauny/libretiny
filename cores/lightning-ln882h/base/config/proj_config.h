@@ -81,5 +81,7 @@
 #define hexdump ln_hexdump
 #endif // __cplusplus
 
+#define mbedtls_platform_set_calloc_free(calloc, free)
+
 #endif /* _PROJ_CONFIG_H_ */
 

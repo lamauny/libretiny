@@ -25,6 +25,7 @@ extern "C" {
 
 // WiFi.cpp
 extern WiFiAuthMode securityTypeToAuthMode(uint8_t type);
+uint8_t authModeToSecurityType(WiFiAuthMode auth);
 
 // WiFiEvents.cpp
 extern void wifiEventSendArduino(EventId event);
@@ -33,6 +34,7 @@ extern void registerWifiHandlers();
 typedef struct {
 	bool initialized;
 	bool sleep;
+	WiFiMode mode;
 	SemaphoreHandle_t scanSem;
 	WiFiNetworkInfo sta;
 	WiFiNetworkInfo ap;
@@ -42,3 +44,4 @@ typedef struct {
 #define pDATA ((WiFiData *)pWiFi->data)
 #define cDATA ((WiFiData *)cls->data)
 
+#define IP_FMT "%u.%u.%u.%u"

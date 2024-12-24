@@ -29,13 +29,15 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 
 	if (mode == WIFI_MODE_APSTA) {
 		LT_EM(WIFI, "AP+STA mode not supported!");
-		return false;
+		goto error;
 	}
 
 	if (sta == WLMODE_ENABLE) {
 		LT_DM(WIFI, "Enabling STA");
+		//1. sta mac get
 		uint8_t mac_addr[6];
 		sysparam_sta_mac_get(mac_addr);
+		LT_DM(WIFI, "MACADDR: %02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
 
 		//2. net device(lwip)
 		netdev_set_mac_addr(NETIF_IDX_STA, mac_addr);
@@ -57,16 +59,24 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 
 	if (ap == WLMODE_ENABLE) {
 		LT_DM(WIFI, "Enabling AP");
-		// TODO
+		//1. ap mac get
+		uint8_t mac_addr[6];
+		sysparam_softap_mac_get(mac_addr);
+		LT_DM(WIFI, "MACADDR: %02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+
+		//2. net device(lwip)
+		netdev_set_mac_addr(NETIF_IDX_AP, mac_addr);
+		netdev_set_active(NETIF_IDX_AP);
+
 		wifiEventSendArduino(ARDUINO_EVENT_WIFI_AP_START);
-	} else if (ap == WLMODE_DISABLE) {
+	} 
+	else if (ap == WLMODE_DISABLE) {
 		LT_DM(WIFI, "Disabling AP");
-		// TODO
+		wifi_softap_deauth_all();
+		netdev_set_state(NETIF_IDX_AP, NETDEV_DOWN);
+
 		wifiEventSendArduino(ARDUINO_EVENT_WIFI_AP_STOP);
 	}
-
-	// force checking actual mode again
-	mode = getMode();
 
 	LT_HEAP_I();
 

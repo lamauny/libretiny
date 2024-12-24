@@ -2,7 +2,7 @@
 
 #include "WiFiPrivate.h"
 
-static uint8_t mac_addr[6]        = {0x00, 0x50, 0xC2, 0x5E, 0x88, 0x99};
+static uint8_t mac_addr[6]        = {0x00, 0x50, 0xC2, 0x7F, 0xBC, 0x00};
 
 WiFiStatus
 WiFiClass::begin(const char *ssid, const char *passphrase, int32_t channel, const uint8_t *bssid, bool connect) {

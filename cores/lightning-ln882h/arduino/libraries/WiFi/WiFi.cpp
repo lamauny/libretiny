@@ -35,3 +35,25 @@ WiFiAuthMode securityTypeToAuthMode(uint8_t type) {
 	}
 	return WIFI_AUTH_INVALID;
 }
+
+uint8_t authModeToSecurityType(WiFiAuthMode auth) {
+	switch (auth) {
+		case WIFI_AUTH_OPEN:
+			return LN_WIFI_AUTH_OPEN;
+		case WIFI_AUTH_WEP:
+			return LN_WIFI_AUTH_WEP;
+		case WIFI_AUTH_WPA_PSK:
+			return LN_WIFI_AUTH_WPA_PSK;
+		case WIFI_AUTH_WPA2_PSK:
+			return LN_WIFI_AUTH_WPA2_PSK;
+		case WIFI_AUTH_WPA_WPA2_PSK:
+			return LN_WIFI_AUTH_WPA_WPA2_PSK;
+		case WIFI_AUTH_WPA2_ENTERPRISE:
+			return LN_WIFI_AUTH_WPA2_ENTERPRISE;
+		case WIFI_AUTH_WPA3_PSK:
+			return LN_WIFI_AUTH_WPA3_SAE;
+		case WIFI_AUTH_WPA2_WPA3_PSK:
+			return LN_WIFI_AUTH_WPA2_PSK_WPA3_SAE;
+	}
+	return WIFI_AUTH_INVALID;
+}

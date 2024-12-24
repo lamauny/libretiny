@@ -10,6 +10,7 @@ void wifiEventSendArduino(EventId event) {
 }
 
 static void wifiEventStaStartup(void *arg) {
+	wifiEventSendArduino(ARDUINO_EVENT_WIFI_STA_START);
 }
 
 static void wifiEventStaConnected(void *arg) {
@@ -64,14 +65,27 @@ static void wifiEventStaConnectFailed(void *arg) {
 
 static void wifiEventSoftAPStartup(void *arg) {
 	netdev_set_state(NETIF_IDX_AP, NETDEV_UP);
+	wifiEventSendArduino(ARDUINO_EVENT_WIFI_AP_START);
 }
 
 static void wifiEventSoftAPAssociated(void *arg) {
 	const uint8_t *mac_addr = (const uint8_t *)arg;
+	EventInfo eventInfo;
+	memset(&eventInfo, 0, sizeof(EventInfo));
+	if (!pWiFi)	return; // failsafe
+
+	memcpy(eventInfo.wifi_ap_staconnected.mac, mac_addr, 6);
+	pWiFi->postEvent(ARDUINO_EVENT_WIFI_AP_STACONNECTED, eventInfo);
 }
 
 static void wifiEventSoftAPDisassociated(void *arg) {
 	const uint8_t *mac_addr = (const uint8_t *)arg;
+	EventInfo eventInfo;
+	memset(&eventInfo, 0, sizeof(EventInfo));
+	if (!pWiFi)	return; // failsafe
+
+	memcpy(eventInfo.wifi_ap_staconnected.mac, mac_addr, 6);
+	pWiFi->postEvent(ARDUINO_EVENT_WIFI_AP_STADISCONNECTED, eventInfo);
 }
 
 static void wifiEventIpReceived(struct netif *nif) {
