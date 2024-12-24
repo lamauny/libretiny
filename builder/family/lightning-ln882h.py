@@ -37,6 +37,8 @@ queue.AppendPublic(
         "ARM_MATH_CM4",
         "LN882H",
         ("PLATFORM_LN882H","1"),
+        ("MBEDTLS_CONFIG_FILE",r"\"mbedtls_config.h\""),
+        "MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED",
     ],
     ASFLAGS=[
         "-mcpu=cortex-m4",
@@ -133,7 +135,7 @@ queue.AddLibrary(
         "+<components/serial>",
         "+<components/utils/debug/CmBacktrace>",
         "+<components/utils/power_mgmt>",
-        "+<components/utils/runtime>",
+        #"+<components/utils/runtime>",
         "+<components/utils/reboot_trace>",
         "+<components/tencent/qcloud_iot_c_sdk/external_libs/cJSON>",
     ],
@@ -151,9 +153,7 @@ queue.AddLibrary(
         "+<components/wifi/wifi_manager/wifi_manager.c>",
         "+<components/wifi/wifi_lib_import/wifi_port.c>",
         # DHCPD
-        "+<components/net/dhcpd/dhcpd.c>",
-        "+<components/net/dhcpd/dhcp_packet.c>",
-        "+<components/net/dhcpd/ip_allocator.c>",
+        "+<components/net/dhcpd/*.c>",
         # Utils
         "+<components/utils/ln_misc.c>",
         "+<components/utils/ln_sha1.c>",
@@ -201,11 +201,7 @@ queue.AddLibrary(
         "+<components/net/mbedtls/port_ln/include>",
     ],
     options=dict(
-        CPPDEFINES=[
-            "LN882H_SDK",
-            ("MBEDTLS_CONFIG_FILE",r"\"mbedtls_config.h\""),
-            "MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED",
-            ],
+        CPPDEFINES=["LN882H_SDK"],
         CFLAGS=["-w"],
     ),
 )

@@ -37,15 +37,9 @@
   #error "flash partition overlap,please check <flash_partition_table.json>!!!"
 #endif
 
-#define KVS_SPACE_OFFSET                (0x001E4000)
-#define KVS_SPACE_SIZE                  (1024*32)
-#if (KVS_SPACE_OFFSET < (KV_SPACE_OFFSET + KV_SPACE_SIZE))
-  #error "flash partition overlap,please check <flash_partition_table.json>!!!"
-#endif
-
-#define USER_SPACE_OFFSET                (0x001EC000)
-#define USER_SPACE_SIZE                  (1024*80)
-#if (USER_SPACE_OFFSET < (KVS_SPACE_OFFSET + KVS_SPACE_SIZE))
+#define USER_SPACE_OFFSET                (0x001E4000)
+#define USER_SPACE_SIZE                  (1024*112)
+#if (USER_SPACE_OFFSET < (KV_SPACE_OFFSET + KV_SPACE_SIZE))
   #error "flash partition overlap,please check <flash_partition_table.json>!!!"
 #endif
 
