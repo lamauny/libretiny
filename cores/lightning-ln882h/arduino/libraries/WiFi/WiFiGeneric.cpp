@@ -23,7 +23,7 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 	}
 
 	LT_HEAP_I();
-	WiFiMode currentMode	 = getMode();
+	WiFiMode currentMode     = DATA->mode;
 	WiFiNetworkInfo &staInfo = DATA->sta;
 	WiFiNetworkInfo &apInfo	 = DATA->ap;
 
@@ -34,6 +34,7 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 
 	if (sta == WLMODE_ENABLE) {
 		LT_DM(WIFI, "Enabling STA");
+
 		//1. sta mac get
 		uint8_t mac_addr[6];
 		sysparam_sta_mac_get(mac_addr);
@@ -59,6 +60,7 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 
 	if (ap == WLMODE_ENABLE) {
 		LT_DM(WIFI, "Enabling AP");
+
 		//1. ap mac get
 		uint8_t mac_addr[6];
 		sysparam_softap_mac_get(mac_addr);
@@ -78,6 +80,8 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 		wifiEventSendArduino(ARDUINO_EVENT_WIFI_AP_STOP);
 	}
 
+	DATA->mode = mode; //getMode();
+
 	LT_HEAP_I();
 
 	__wrap_ln_printf_enable();
@@ -91,6 +95,8 @@ error:
 WiFiMode WiFiClass::getMode() {
 	if (!DATA->initialized)
 		return WIFI_MODE_NULL;
+
+	return DATA->mode; // TODO
 
 	switch (wifi_current_mode_get()) {
 		case LN_WIFI_MODE_STATION:

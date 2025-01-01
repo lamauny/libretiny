@@ -8,9 +8,9 @@ static uint8_t mac_addr[6] = {0x00, 0x50, 0xC2, 0x7F, 0xBC, 0x01};
 bool WiFiClass::softAP(const char *ssid, const char *passphrase, int channel, bool ssidHidden, int maxClients) {
 	LT_DM(WIFI, "softAP");
 	if (!enableAP(true))
-		return WL_CONNECT_FAILED;
+		return false;
 	if (!validate(ssid, passphrase))
-		return WL_CONNECT_FAILED;
+		return false;
 
 	LT_HEAP_I();
 
@@ -26,7 +26,7 @@ bool WiFiClass::softAP(const char *ssid, const char *passphrase, int channel, bo
 	info.ssidHidden = ssidHidden;
 	info.bssid      = softAPmacAddress(mac_addr);
 	info.channel	= channel;
-	info.auth		= passphrase ? LN_WIFI_AUTH_WPA_WPA2_PSK : LN_WIFI_AUTH_OPEN;
+	info.auth		= passphrase ? LN_WIFI_AUTH_WPA2_PSK : LN_WIFI_AUTH_OPEN;
 
 	LT_IM(WIFI, "Creating SoftAP %s", ssid);
 

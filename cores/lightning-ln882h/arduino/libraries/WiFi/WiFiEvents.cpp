@@ -95,7 +95,7 @@ static void wifiEventIpReceived(struct netif *nif) {
 
 	eventInfo.got_ip.if_index   = 0;
 	eventInfo.got_ip.ip_changed = true;
-	eventInfo.got_ip.ip_info.ip.addr      = nif->ip4_addr.addr;
+	eventInfo.got_ip.ip_info.ip.addr      = nif->ip_addr.addr;
 	eventInfo.got_ip.ip_info.gw.addr      = nif->gw.addr;
 	eventInfo.got_ip.ip_info.netmask.addr = nif->netmask.addr;
 	pWiFi->postEvent(ARDUINO_EVENT_WIFI_STA_GOT_IP, eventInfo);
