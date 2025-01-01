@@ -24,13 +24,33 @@ queue.AppendPublic(
         "-fdata-sections",
         "-fno-strict-aliasing",
         "-MD","-MP",
+#        "-O1","-DNDEBUG",
     ],
     CFLAGS=[
         "-Wpointer-arith",
         "-Wno-write-strings",
         "-Wno-maybe-uninitialized",
+#        "-Wall",
+#        "-Wextra",
+#        "-Wundef",
+#        "-Wshadow",
+#        "-Wredundant-decls",
+#        "-Wstrict-prototypes",
+#        "-Wimplicit-function-declaration",
+#        "-Wmissing-prototypes",
+#        "-Wdouble-promotion",
+#        "-Wfloat-conversion",
+#        "-Wformat=2",
     ],
     CXXFLAGS=[
+#        "-Wall",
+#        "-Wextra",
+#        "-Wundef",
+#        "-Wshadow",
+#        "-Wredundant-decls",
+#        "-Wmissing-prototypes",
+#        "-Wdouble-promotion",
+#        "-Wfloat-conversion",
     ],
     CPPDEFINES=[
         # other options
@@ -38,7 +58,6 @@ queue.AppendPublic(
         "LN882H",
         ("PLATFORM_LN882H","1"),
         ("MBEDTLS_CONFIG_FILE",r"\"mbedtls_config.h\""),
-        "MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED",
     ],
     ASFLAGS=[
         "-mcpu=cortex-m4",
@@ -58,6 +77,7 @@ queue.AppendPublic(
         "--specs=nano.specs",
         # stdio wrappers (base/port/printf.c)
         "-Wl,-wrap,ln_printf",
+        "-Wl,--gc-sections",
     ],
 )
 queue.AppendPrivate(
