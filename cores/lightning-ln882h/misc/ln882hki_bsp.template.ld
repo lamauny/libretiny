@@ -27,6 +27,7 @@ SECTIONS
 		*qspi.c.o*(.text*)
 		*hal_flash.c.o*(.text*)
 		*port.c.o*(.text*)
+		*port.o*(.text*)
 
 		/* Optional .text part*/
 		/*

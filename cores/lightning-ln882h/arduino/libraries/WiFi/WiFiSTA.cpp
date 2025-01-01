@@ -41,7 +41,7 @@ bool WiFiClass::config(IPAddress localIP, IPAddress gateway, IPAddress subnet, I
 	WiFiNetworkInfo &info = DATA->sta;
 	struct netif *ifs = netdev_get_netif(NETIF_IDX_STA);
 
-	struct ip_addr d1, d2;
+	ip4_addr_t d1, d2;
 	d1.addr = info.dns1 = dns1;
 	d2.addr = info.dns2 = dns2;
 	if (d1.addr)
@@ -54,7 +54,7 @@ bool WiFiClass::config(IPAddress localIP, IPAddress gateway, IPAddress subnet, I
 		netifapi_dhcp_start(ifs);
 		return true;
 	}
-	struct ip_addr ipaddr, netmask, gw;
+	ip4_addr_t ipaddr, netmask, gw;
 	ipaddr.addr = info.localIP = localIP;
 	netmask.addr = info.subnet = subnet;
 	gw.addr = info.gateway = gateway;

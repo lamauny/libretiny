@@ -15,7 +15,7 @@ bool startMainTask() {
     "main",
     (OS_ThreadEntry_t)mainTask,
     NULL,
-    OS_PRIORITY_NORMAL,
+    OS_PRIORITY_BELOW_NORMAL,
     MAIN_TASK_STACK_SIZE);
 
 	if (ret != OS_OK)
