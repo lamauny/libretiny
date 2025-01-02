@@ -19,6 +19,7 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 		wifi_manager_init();
 		//Register event handlers
 		registerWifiHandlers();
+		DATA->mode = WIFI_MODE_NULL;
 		DATA->initialized = true;
 	}
 
@@ -80,7 +81,7 @@ bool WiFiClass::modePriv(WiFiMode mode, WiFiModeAction sta, WiFiModeAction ap) {
 		wifiEventSendArduino(ARDUINO_EVENT_WIFI_AP_STOP);
 	}
 
-	DATA->mode = mode; //getMode();
+	DATA->mode = mode;
 
 	LT_HEAP_I();
 
@@ -96,9 +97,10 @@ WiFiMode WiFiClass::getMode() {
 	if (!DATA->initialized)
 		return WIFI_MODE_NULL;
 
-	return DATA->mode; // TODO
+	// return fake value because the chip doesn't report the mode before it is started
+	return DATA->mode;
 
-	switch (wifi_current_mode_get()) {
+	/*switch (wifi_current_mode_get()) {
 		case LN_WIFI_MODE_STATION:
 			return WIFI_MODE_STA;
 		case LN_WIFI_MODE_AP:
@@ -106,7 +108,7 @@ WiFiMode WiFiClass::getMode() {
 		case LN_WIFI_MODE_AP_STATION:
 			return WIFI_MODE_APSTA;
 	}
-	return WIFI_MODE_NULL;
+	return WIFI_MODE_NULL;*/
 }
 
 WiFiStatus WiFiClass::status() {
