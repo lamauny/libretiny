@@ -6,7 +6,7 @@
 extern uint8_t uart_print_port;
 extern Serial_t m_LogSerial;
 
-void lt_init_log(void)
+static void lt_init_log(void)
 {
     // default LT print port
     uart_print_port = LT_UART_DEFAULT_LOGGER;
@@ -45,8 +45,12 @@ void lt_init_family() {
     //init system parameter
     sysparam_integrity_check_all();
 
-    //ln_pm_sleep_mode_set(ACTIVE);
-    //ln_pm_always_clk_disable_select(CLK_G_I2S | CLK_G_WS2811 | CLK_G_SDIO | CLK_G_AES);
+    ln_pm_sleep_mode_set(ACTIVE);
+    //ln_pm_always_clk_disable_select(CLK_G_I2S | CLK_G_WS2811 | CLK_G_SDIO);
+    /*ln_pm_always_clk_disable_select(CLK_G_I2S | CLK_G_WS2811 | CLK_G_SDIO | CLK_G_AES);
+    ln_pm_lightsleep_clk_disable_select(CLK_G_GPIOA | CLK_G_GPIOB | CLK_G_SPI0 | CLK_G_SPI1 | CLK_G_I2C0 |
+                                        CLK_G_UART1 | CLK_G_UART2 | CLK_G_WDT | CLK_G_TIM1 | CLK_G_TIM2 | CLK_G_MAC | CLK_G_DMA | CLK_G_RF | CLK_G_ADV_TIMER| CLK_G_TRNG);*/
+
 }
 
 void lt_init_arduino() {
