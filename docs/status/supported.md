@@ -38,7 +38,7 @@ If you notice a feature that you've tested, which works (or not) and doesn't mat
 
 &nbsp;                   | `BK7231T` | `BK7231N` | `RTL8710B` | `RTL8720C` | `BK7231Q`  |  `LN882H` 
 -------------------------|-----------|-----------|------------|------------|------------|------------
-Stability                | 5/5       | 5/5       | 4/5        | 2/5        | 1/5        | 1/5
+Stability                | 5/5       | 5/5       | 4/5        | 2/5        | 1/5        | 3/5
 LibreTiny Core           | ✔️        | ✔️        | ✔️         | ✔️         | ✔️         | ✔️
 Wiring Core              | ✔️        | ✔️        | ✔️         | ✔️         | ✔️         | ✔️
 **PERIPHERALS** (Core)   |           |           |            |            |            |
@@ -47,19 +47,19 @@ Flash I/O                | ✔️        | ✔️        | ✔️         | ❓ 
 Deep sleep               | ❓         | ✔️        | ❌          | ❌          | ❓         | ❌
 Watchdog timer           | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❌
 **PERIPHERALS** (Wiring) |           |           |            |            |            |
-Digital I/O              | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❓
+Digital I/O              | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ✔️
 PWM                      | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❌
 Interrupts               | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❌
 Analog input (ADC)       | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❌
 `Wire` (I²C)             | ❌         | ❌         | ❗          | ❌          | ❌         | ❌
 `SPI`                    | ❌         | ❌         | ❌          | ❌          | ❌         | ❌
-`Serial`                 | ✔️        | ✔️        | ✔️         | ✔️         | ❓         | ❓
+`Serial`                 | ✔️        | ✔️        | ✔️         | ✔️         | ❓         | ✔️
 `SoftwareSerial`         | ❌         | ❌         | ✔️         | ❌          | ❌         | ❌
 **NETWORKING**           |           |           |            |            |            |
-Wi-Fi STA/AP/Mixed       | ✔️        | ✔️        | ✔️         | ❓          | ❌         | ❌
-Wi-Fi Events             | ✔️        | ✔️        | ✔️         | ❓          | ❌         | ❌
+Wi-Fi STA/AP/Mixed       | ✔️        | ✔️        | ✔️         | ❓          | ❌         | ✔️
+Wi-Fi Events             | ✔️        | ✔️        | ✔️         | ❓          | ❌         | ✔️
 OTA updates              | ✔️        | ✔️        | ✔️         | ❌          | ❌         | ❌
-MDNS                     | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ❌
+MDNS                     | ✔️        | ✔️        | ✔️         | ❓          | ❓         | ✔️
 
 Symbols:
 
