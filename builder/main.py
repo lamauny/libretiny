@@ -87,7 +87,7 @@ if "nobuild" in COMMAND_LINE_TARGETS:
     env["UF2OTA"] = "dummy"  # forcefully allow uploading using ltchiptool
 else:
     target_elf = env.BuildProgram()
-    target_uf2 = env.BuildUF2OTA(target_uf2, target_elf)
+    #target_uf2 = env.BuildUF2OTA(target_uf2, target_elf)
     env.Depends(target_uf2, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_uf2))
@@ -130,16 +130,7 @@ else:
 AlwaysBuild(env.Alias("upload", upload_source, upload_actions))
 
 #
-# PATCH EL : make image
-#
-#target_image = env.Alias("image", target_elf, env.Execute("/bin/sh /workspaces/esphome/makeimage.sh"))
-#target_image = env.Alias("image", target_elf, env.Execute("/bin/sh makeimage.sh"))
-#AlwaysBuild(target_image)
-env.AddPostAction(target_elf, env.VerboseAction("/bin/sh makeimage.sh", "Building final binary..."))
-
-#
 # Default targets
 #
-#Default([target_buildprog, target_size])
-Default([target_elf, target_size])
-#Default([target_elf, target_size, target_image])
+Default([target_buildprog, target_size])
+

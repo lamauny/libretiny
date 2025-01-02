@@ -10,6 +10,10 @@ board: PlatformBoardConfig = env.BoardConfig()
 queue = env.AddLibraryQueue("lightning-ln882h")
 env.ConfigureFamily()
 
+env.Replace(
+    PYTHON="python",
+)
+
 # Flags
 queue.AppendPublic(
     CCFLAGS=[
@@ -273,7 +277,6 @@ env.Append(
                     "$OBJCOPY",
                     "-I elf32-littlearm",
                     "-O binary",
-                    "-B arm",
                     "$SOURCE",
                     "$TARGET",
                 ],
@@ -287,8 +290,6 @@ env.Append(
 queue.BuildLibraries()
 
 # Main firmware outputs and actions
-#image_ota1 = "${BUILD_DIR}/image_ota1.${FLASH_OTA1_OFFSET}.bin"
-#image_ota2 = "${BUILD_DIR}/image_ota2.${FLASH_OTA2_OFFSET}.bin"
 #env.Replace(
 #    # linker command (tbd)
 #    LINK="${LTCHIPTOOL} link2bin ${BOARD_JSON} '' ''",
@@ -302,17 +303,17 @@ queue.BuildLibraries()
 #     UF2OTA=[],
 # )
 
-MAKEIMAGE="python ${SDK_DIR}/tools/python_scripts/makeimage.py"
 env.Append(
     BUILDERS=dict(
         BinToFirmware=Builder(
             action=" ".join(
                 [
-                    "$MAKEIMAGE",
+                    "$PYTHON",
+                    "${SDK_DIR}/tools/python_scripts/makeimage.py",
                     "--boot ${SDK_DIR}/lib/boot_ln882h.bin",
                     "--app $SOURCE",
-                    "--output ${BUILD_DIR}",
-                    "--part flash_partition_cfg.json",
+                    "--output $TARGET",
+                    "--part ${FAMILY_DIR}/base/config/flash_partition_cfg.json",
                     "--ver 1.0",
                     "--crp 0",
                 ],
@@ -321,9 +322,16 @@ env.Append(
     ),
 )
 
-target_bin=join("${BUILD_DIR}", "${PROGNAME}.bin")
-target_elf=join("${BUILD_DIR}", "${PROGNAME}.elf")
-AlwaysBuild(env.ObjToBin(f"{target_bin}", f"{target_elf}"))
+target_bin = join("${BUILD_DIR}", "${PROGNAME}.bin")
+target_elf = join("${BUILD_DIR}", "${PROGNAME}.elf")
+target_fw  = join("${BUILD_DIR}", "firmware.bin")
+target_uf2 = join("${BUILD_DIR}", "firmware.uf2")
 
-env.AddPostAction(f"{target_elf}", env.ObjToBin(target_bin, target_elf))
-env.AddPostAction(target_elf, env.BinToFirmware(source=target_bin))
+AlwaysBuild(env.Alias("nobuild", target_uf2))
+
+env.AddPostAction(target_elf, env.ObjToBin(target_bin, target_elf))
+env.Depends(target_bin, target_elf)
+env.AddPostAction(target_bin, env.BinToFirmware(target_fw, target_bin))
+env.Depends(target_fw, target_bin)
+env.AddPostAction(target_fw,  env.VerboseAction("cp ${BUILD_DIR}/firmware.bin ${BUILD_DIR}/firmware.uf2", "Fake UF2 generation..."))
+env.Depends(target_uf2, target_fw)
