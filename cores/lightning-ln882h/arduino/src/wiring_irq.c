@@ -4,24 +4,50 @@
 
 void GPIOA_IRQHandler()
 {
-    if(hal_gpio_pin_get_it_flag(GPIOA_BASE, GPIO_PIN_5) == HAL_SET)
-    {
-        hal_gpio_pin_clr_it_flag(GPIOA_BASE, GPIO_PIN_5);
-    }
+	for (pin_size_t pinNumber = 0; pinNumber < 16; pinNumber++) {
+		gpio_pin_t gpio = GPIO_GET_PIN(pinNumber);
+
+		if(hal_gpio_pin_get_it_flag(GPIOA_BASE, gpio) == HAL_SET) {
+        	hal_gpio_pin_clr_it_flag(GPIOA_BASE, gpio);
+
+			PinInfo *pin = pinInfo(pinNumber);
+			if (!pin) 
+				continue;
+
+			PinData *data = pinData(pin);
+			if (!data->irqHandler)
+				continue;
+			if (!data->irqParam)
+				((voidFuncPtr)data->irqHandler)();
+			else
+				((voidFuncPtrParam)data->irqHandler)(data->irqParam);
+    	}
+	}
 }
 
-/*
-static void gpioIrqHandler(uint32_t id, gpio_irq_event event) {
-	// id is pin data
-	PinData *data = (PinData *)id;
-	if (!data->irqHandler)
-		return;
-	if (!data->irqParam)
-		((voidFuncPtr)data->irqHandler)();
-	else
-		((voidFuncPtrParam)data->irqHandler)(data->irqParam);
+void GPIOB_IRQHandler()
+{
+	for (pin_size_t pinNumber = 16; pinNumber < 32; pinNumber++) {
+		gpio_pin_t gpio = GPIO_GET_PIN(pinNumber);
+
+		if(hal_gpio_pin_get_it_flag(GPIOB_BASE, gpio) == HAL_SET) {
+        	hal_gpio_pin_clr_it_flag(GPIOB_BASE, gpio);
+
+			PinInfo *pin = pinInfo(pinNumber);
+			if (!pin) 
+				continue;
+
+			PinData *data = pinData(pin);
+			if (!data->irqHandler)
+				continue;
+			if (!data->irqParam)
+				((voidFuncPtr)data->irqHandler)();
+			else
+				((voidFuncPtrParam)data->irqHandler)(data->irqParam);
+    	}
+	}
 }
-*/
+
 void attachInterruptParam(pin_size_t interruptNumber, voidFuncPtrParam callback, PinStatus mode, void *param) {
 	pinCheckGetData(interruptNumber, PIN_IRQ, );
 
