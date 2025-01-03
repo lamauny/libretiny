@@ -10,10 +10,6 @@ board: PlatformBoardConfig = env.BoardConfig()
 queue = env.AddLibraryQueue("lightning-ln882h")
 env.ConfigureFamily()
 
-env.Replace(
-    PYTHON="python",
-)
-
 # Flags
 queue.AppendPublic(
     CCFLAGS=[
@@ -299,16 +295,16 @@ queue.BuildLibraries()
 #        f"{image_ota1},{image_ota2}=device:ota1,ota2;flasher:ota1,ota2",
 #    ],
 #)
-# env.Replace(
-#     UF2OTA=[],
-# )
+env.Replace(
+    UF2OTA=[],
+)
 
 env.Append(
     BUILDERS=dict(
         BinToFirmware=Builder(
             action=" ".join(
                 [
-                    "$PYTHON",
+                    "${LTPYTHONEXE}",
                     "${SDK_DIR}/tools/python_scripts/makeimage.py",
                     "--boot ${SDK_DIR}/lib/boot_ln882h.bin",
                     "--app $SOURCE",
@@ -318,7 +314,16 @@ env.Append(
                     "--crp 0",
                 ],
             ),
-        )
+        ),
+        FirmwareToOTA=Builder(
+            action=" ".join(
+                [
+                    "${LTPYTHONEXE}",
+                    "${SDK_DIR}/tools/python_scripts/ota_image_generator.py",
+                    "$SOURCE",
+                ],
+            ),
+        ),
     ),
 )
 
@@ -329,9 +334,18 @@ target_uf2 = join("${BUILD_DIR}", "firmware.uf2")
 
 AlwaysBuild(env.Alias("nobuild", target_uf2))
 
+# Build bin from elf
 env.AddPostAction(target_elf, env.ObjToBin(target_bin, target_elf))
 env.Depends(target_bin, target_elf)
+
+# Build firmware from bin
 env.AddPostAction(target_bin, env.BinToFirmware(target_fw, target_bin))
 env.Depends(target_fw, target_bin)
+
+# Build OTA from firmware
+target_ota = env.Alias("OTA", env.FirmwareToOTA(source=target_fw))
+env.Depends(target_uf2, target_ota)
+
+# Build UF2
 env.AddPostAction(target_fw,  env.VerboseAction("cp ${BUILD_DIR}/firmware.bin ${BUILD_DIR}/firmware.uf2", "Fake UF2 generation..."))
 env.Depends(target_uf2, target_fw)
