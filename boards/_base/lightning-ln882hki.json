@@ -1,7 +1,9 @@
 {
   "build": {
     "family": "LN882H",
-		"ldscript": "ln882hki_bsp.ld"
+    "ldscript": "ln882hki_bsp.ld",
+    "bootfile": "boot_ln882h.bin",
+    "flashpart": "flash_partition_cfg.json"
   },
   "flash": {
     "bootloader": "0x000000+0x06000",

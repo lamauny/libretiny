@@ -1,4 +1,4 @@
-/* Copyright (c) Kuba Szczodrzyński 2023-02-27. */
+/* Copyright (c) Etienne Le Cousin 2024-03-03. */
 
 #include <libretiny.h>
 #include <sdk_private.h>
