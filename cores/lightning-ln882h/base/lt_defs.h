@@ -7,7 +7,7 @@
 #define LT_HAS_LWIP		 1
 #define LT_HAS_LWIP2	 1
 #define LT_HAS_MBEDTLS	 1
-#define LT_HAS_OTA		 0
+#define LT_HAS_OTA		 1
 #define LT_HAS_PRINTF	 1
 #define LT_HW_DEEP_SLEEP 0
 #define LT_HW_WATCHDOG	 0

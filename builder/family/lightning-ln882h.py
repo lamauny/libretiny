@@ -235,7 +235,7 @@ env.Replace(
     LINK='${LTCHIPTOOL} link2bin ${BOARD_JSON} "" ""',
     # UF2OTA input list
     UF2OTA=[
-        # ota binary image for flasher
-        f"{image_fw}=flasher:ota",
+        # ota binary image for device
+        f"{image_fw}=device:ota",
     ],
 )
