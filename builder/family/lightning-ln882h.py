@@ -25,33 +25,13 @@ queue.AppendPublic(
         "-fdata-sections",
         "-fno-strict-aliasing",
         "-MD","-MP",
-#        "-O1","-DNDEBUG",
     ],
     CFLAGS=[
         "-Wpointer-arith",
         "-Wno-write-strings",
         "-Wno-maybe-uninitialized",
-#        "-Wall",
-#        "-Wextra",
-#        "-Wundef",
-#        "-Wshadow",
-#        "-Wredundant-decls",
-#        "-Wstrict-prototypes",
-#        "-Wimplicit-function-declaration",
-#        "-Wmissing-prototypes",
-#        "-Wdouble-promotion",
-#        "-Wfloat-conversion",
-#        "-Wformat=2",
     ],
     CXXFLAGS=[
-#        "-Wall",
-#        "-Wextra",
-#        "-Wundef",
-#        "-Wshadow",
-#        "-Wredundant-decls",
-#        "-Wmissing-prototypes",
-#        "-Wdouble-promotion",
-#        "-Wfloat-conversion",
     ],
     CPPDEFINES=[
         # other options
@@ -116,7 +96,6 @@ queue.AddLibrary(
         # Hal
         "+<mcu/driver_ln882h/hal/*.c>",
         # FreeRTOS
-#        "+<components/kernel/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c>",
         "+<components/kernel/FreeRTOS_Adapter/*.c>",
         # Serial
         "+<components/serial/serial.c>",
@@ -145,7 +124,6 @@ queue.AddLibrary(
         "+<components>",
         # FreeRTOS
         "+<components/kernel>",
-#        "+<components/kernel/FreeRTOS/Source/include>",
         "+<components/kernel/FreeRTOS/Source/portable/GCC/ARM_CM4F>",
         "+<components/kernel/FreeRTOS_Adapter>",
         "+<components/kernel/osal>",
@@ -244,139 +222,21 @@ queue.AppendPublic(
    ],
 )
 
-# Generate the json needed by mkimage tool
-def env_export_board_partcfg_json(env: Environment, board: PlatformBoardConfig):
-    output = join("${BUILD_DIR}", "flash_partition_cfg.json")
-    flash_layout = board.manifest["flash"]
-
-    # find all partitions
-    partitions = []
-    for name, layout in flash_layout.items():
-        part = {}
-        (offset, _, length) = layout.partition("+")
-        offset = int(offset, 16)
-        length = int(length, 16)
-        part["partition_type"] = name.upper()
-        part["start_addr"]     = f"0x{offset:08X}"
-        part["size_KB"]        = length // 1024
-        partitions.append(part)
-
-    partcfg: dict = {
-        "vendor_define": [],        # boot and part_tab should be there but it's not needed
-        "user_define": partitions   # so put all partitions in user define
-        }
-    # export file
-    with open(env.subst(output), "w") as f:
-        json.dump(partcfg, f, indent="\t")
-
-    env["BOARD_PARTCFG_JSON"] = output
-
-env.AddMethod(env_export_board_partcfg_json, "ExportBoardPartCfgJson")
-env.ExportBoardPartCfgJson(board)
-
-# Misc options
-# env.Replace(
-#     SIZEPROGREGEXP=r"^(?:\.vectors|\.text|\.rodata|\.data|\.ARM\.exidx)\s+([0-9]+).*",
-#     SIZEDATAREGEXP=r"^(?:\.vectors|\.data|\.bss)\s+([0-9]+).*",
-#     SIZECHECKCMD="$SIZETOOL -A -d $SOURCES",
-#     SIZEPRINTCMD="$SIZETOOL -B -d $SOURCES",
-# )
 # Generate linker scripts with correct flash offsets
 env.GenerateLinkerScript(board, board.get("build.ldscript"))
-
-env.Append(
-    BUILDERS=dict(
-        BinToObj=Builder(
-            action=" ".join(
-                [
-                    "$OBJCOPY",
-                    "-I binary",
-                    "-O elf32-littlearm",
-                    "-B arm",
-                    "$SOURCE",
-                    "$TARGET",
-                ],
-            ),
-        ),
-        ObjToBin=Builder(
-            action=" ".join(
-                [
-                    "$OBJCOPY",
-                    "-I elf32-littlearm",
-                    "-O binary",
-                    "$SOURCE",
-                    "$TARGET",
-                ],
-            ),
-        )
-    ),
-)
-
 
 # Build all libraries
 queue.BuildLibraries()
 
 # Main firmware outputs and actions
-#env.Replace(
-#    # linker command (tbd)
-#    LINK="${LTCHIPTOOL} link2bin ${BOARD_JSON} '' ''",
-#    # UF2OTA input list
-#    UF2OTA=[
-#        # same OTA images for flasher and device
-#        f"{image_ota1},{image_ota2}=device:ota1,ota2;flasher:ota1,ota2",
-#    ],
-#)
+image_fw = "${BUILD_DIR}/image_firmware.bin"
+#image_ota_rbl = "${BUILD_DIR}/image_${MCULC}_app.ota.rbl"
 env.Replace(
-    UF2OTA=[],
+    # linker command (encryption + packaging)
+    LINK='${LTCHIPTOOL} link2bin ${BOARD_JSON} "" ""',
+    # UF2OTA input list
+    UF2OTA=[
+        # app binary image for flasher
+        f"{image_fw}=device:download",
+    ],
 )
-
-env.Append(
-    BUILDERS=dict(
-        BinToFirmware=Builder(
-            action=" ".join(
-                [
-                    "${LTPYTHONEXE}",
-                    "${SDK_DIR}/tools/python_scripts/makeimage.py",
-                    "--boot ${SDK_DIR}/lib/boot_ln882h.bin",
-                    "--app $SOURCE",
-                    "--output $TARGET",
-                    "--part ${BOARD_PARTCFG_JSON}",
-                    "--ver 1.0",
-                    "--crp 0",
-                ],
-            ),
-        ),
-        FirmwareToOTA=Builder(
-            action=" ".join(
-                [
-                    "${LTPYTHONEXE}",
-                    "${SDK_DIR}/tools/python_scripts/ota_image_generator.py",
-                    "$SOURCE",
-                ],
-            ),
-        ),
-    ),
-)
-
-target_bin = join("${BUILD_DIR}", "${PROGNAME}.bin")
-target_elf = join("${BUILD_DIR}", "${PROGNAME}.elf")
-target_fw  = join("${BUILD_DIR}", "firmware.bin")
-target_uf2 = join("${BUILD_DIR}", "firmware.uf2")
-
-AlwaysBuild(env.Alias("nobuild", target_uf2))
-
-# Build bin from elf
-env.AddPostAction(target_elf, env.ObjToBin(target_bin, target_elf))
-env.Depends(target_bin, target_elf)
-
-# Build firmware from bin
-env.AddPostAction(target_bin, env.BinToFirmware(target_fw, target_bin))
-env.Depends(target_fw, target_bin)
-
-# Build OTA from firmware
-target_ota = env.Alias("OTA", env.FirmwareToOTA(source=target_fw))
-env.Depends(target_uf2, target_ota)
-
-# Build UF2
-env.AddPostAction(target_fw,  env.VerboseAction("cp ${BUILD_DIR}/firmware.bin ${BUILD_DIR}/firmware.uf2", "Fake UF2 generation..."))
-env.Depends(target_uf2, target_fw)

@@ -87,7 +87,7 @@ if "nobuild" in COMMAND_LINE_TARGETS:
     env["UF2OTA"] = "dummy"  # forcefully allow uploading using ltchiptool
 else:
     target_elf = env.BuildProgram()
-    #target_uf2 = env.BuildUF2OTA(target_uf2, target_elf)
+    target_uf2 = env.BuildUF2OTA(target_uf2, target_elf)
     env.Depends(target_uf2, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_uf2))
