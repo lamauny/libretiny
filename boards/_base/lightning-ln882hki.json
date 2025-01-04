@@ -15,7 +15,7 @@
   },
   "upload": {
     "flash_size": 2097152,
-    "maximum_size": 806912
+    "maximum_size": 1228800
   },
   "connectivity": [
     "ble"

@@ -22,7 +22,7 @@
 		]
 	},
 	"upload": {
-		"maximum_ram_size": 303104,
+		"maximum_ram_size": 302080,
 		"require_upload_port": true,
 		"speed": 115200,
 		"protocol": "uart",
