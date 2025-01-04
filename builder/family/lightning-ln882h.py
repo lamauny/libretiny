@@ -1,5 +1,6 @@
 # Copyright (c) Etienne Le Cousin 2024-02-08.
 
+import json
 from os.path import join
 
 from platformio.platform.board import PlatformBoardConfig
@@ -243,6 +244,36 @@ queue.AppendPublic(
    ],
 )
 
+# Generate the json needed by mkimage tool
+def env_export_board_partcfg_json(env: Environment, board: PlatformBoardConfig):
+    output = join("${BUILD_DIR}", "flash_partition_cfg.json")
+    flash_layout = board.manifest["flash"]
+
+    # find all partitions
+    partitions = []
+    for name, layout in flash_layout.items():
+        part = {}
+        (offset, _, length) = layout.partition("+")
+        offset = int(offset, 16)
+        length = int(length, 16)
+        part["partition_type"] = name.upper()
+        part["start_addr"]     = f"0x{offset:08X}"
+        part["size_KB"]        = length // 1024
+        partitions.append(part)
+
+    partcfg: dict = {
+        "vendor_define": [],        # boot and part_tab should be there but it's not needed
+        "user_define": partitions   # so put all partitions in user define
+        }
+    # export file
+    with open(env.subst(output), "w") as f:
+        json.dump(partcfg, f, indent="\t")
+
+    env["BOARD_PARTCFG_JSON"] = output
+
+env.AddMethod(env_export_board_partcfg_json, "ExportBoardPartCfgJson")
+env.ExportBoardPartCfgJson(board)
+
 # Misc options
 # env.Replace(
 #     SIZEPROGREGEXP=r"^(?:\.vectors|\.text|\.rodata|\.data|\.ARM\.exidx)\s+([0-9]+).*",
@@ -309,7 +340,7 @@ env.Append(
                     "--boot ${SDK_DIR}/lib/boot_ln882h.bin",
                     "--app $SOURCE",
                     "--output $TARGET",
-                    "--part ${FAMILY_DIR}/base/config/flash_partition_cfg.json",
+                    "--part ${BOARD_PARTCFG_JSON}",
                     "--ver 1.0",
                     "--crp 0",
                 ],

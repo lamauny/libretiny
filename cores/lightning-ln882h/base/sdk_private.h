@@ -51,7 +51,6 @@ extern "C" {
 #include "utils/runtime/runtime.h"
 #include "ln_nvds.h"
 #include "ln_kv_api.h"
-#include "flash_partition_table.h"
 
 #ifndef LN882H_SDK
 #undef WIFI_MODE_STATION
