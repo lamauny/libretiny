@@ -229,14 +229,13 @@ env.GenerateLinkerScript(board, board.get("build.ldscript"))
 queue.BuildLibraries()
 
 # Main firmware outputs and actions
-image_fw = "${BUILD_DIR}/image_firmware.bin"
-#image_ota_rbl = "${BUILD_DIR}/image_${MCULC}_app.ota.rbl"
+image_fw = "${BUILD_DIR}/image_firmware-ota-xz-v1.0.bin"
 env.Replace(
-    # linker command (encryption + packaging)
+    # linker command
     LINK='${LTCHIPTOOL} link2bin ${BOARD_JSON} "" ""',
     # UF2OTA input list
     UF2OTA=[
-        # app binary image for flasher
-        f"{image_fw}=device:download",
+        # ota binary image for flasher
+        f"{image_fw}=flasher:ota",
     ],
 )
