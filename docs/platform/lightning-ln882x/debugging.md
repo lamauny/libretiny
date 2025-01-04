@@ -31,7 +31,6 @@ Using a Raspberry Pi is probably the easiest option (and cheapest, as everyone h
 [env:my_board]
 board = ln-02
 debug_tool = custom
-debug_port = localhost:3333
 debug_server =
     ../JLink_Linux_V698e_x86_64/JLinkGDBServerExe
     -singlerun
@@ -52,6 +51,13 @@ debug_init_cmds =
     monitor reset
     $LOAD_CMDS
     $INIT_BREAK
+upload_protocol = custom
+upload_flags =
+    -auto
+    -startapp
+    -exit
+upload_command = ../JLink_Linux_V698e_x86_64/JFlashExe -openprj"../JLink_Linux_V698e_x86_64/ln882h.jflash" -open"${BUILD_DIR}/image_firmware.bin",0 $UPLOAD_FLAGS
+debug_init_break = tbreak Reset_Handler
 ```
 
 ## Technical details
