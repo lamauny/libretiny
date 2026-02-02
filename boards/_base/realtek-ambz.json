@@ -57,9 +57,9 @@
 			},
 			"guide": [
 				"Connect the USB-UART adapter.",
-				"Connect PA29 (TX2) to GND.",
+				"Connect PA30 (TX2) to GND.",
 				"Power-cycle the device or briefly short CEN to GND.",
-				"Disconnect PA29 from GND, keep connected to USB-UART.",
+				"Disconnect PA30 from GND, keep connected to USB-UART.",
 				"Start the flashing process."
 			]
 		},
