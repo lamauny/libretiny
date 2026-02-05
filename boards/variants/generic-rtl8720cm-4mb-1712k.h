@@ -1,4 +1,4 @@
-/* This file was auto-generated from generic-rtl8720cf-4mb-1712k.json using boardgen */
+/* This file was auto-generated from generic-rtl8720cm-4mb-1712k.json using boardgen */
 
 #pragma once
 

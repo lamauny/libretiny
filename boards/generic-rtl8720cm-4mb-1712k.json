@@ -9,7 +9,7 @@
 	],
 	"build": {
 		"mcu": "rtl8720cm",
-		"variant": "generic-rtl8720cf-4mb-1712k"
+		"variant": "generic-rtl8720cm-4mb-1712k"
 	},
 	"name": "Generic - RTL8720CM (4M/1712k)",
 	"symbol": "RTL8720CM (4M/1712k)",
