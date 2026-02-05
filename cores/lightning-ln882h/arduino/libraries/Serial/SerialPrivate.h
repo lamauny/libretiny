@@ -2,13 +2,7 @@
 
 #pragma once
 
-#include <Arduino.h>
-#include <sdk_private.h>
+#include <ArduinoPrivate.h>
+#include <Serial.h>
 
-typedef struct {
-	SerialRingBuffer buf;
-	void (*callback)(void);
-} SerialData;
-
-#define DATA ((SerialData *)this->data)
-#define BUF	 (DATA->buf)
+struct SerialData {};
