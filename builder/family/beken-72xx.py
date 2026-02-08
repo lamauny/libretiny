@@ -538,7 +538,7 @@ queue.AppendPublic(
         "sensor",
         # "wpa", # this is compiled from func/hostapd_intf/hostapd_intf.c
         SOC != SOC_BK7231 and f"ble_{SOC_NAMES[SOC]}",
-        SOC == SOC_BK7251 and "usb",
+        SOC == SOC_BK7251 and f"usb_{SOC_NAMES[SOC]}",
         f"cal_{SOC_NAMES[SOC]}",
         f"rf_test_{SOC_NAMES[SOC]}",
         f"rf_use_{SOC_NAMES[SOC]}",
